@@ -1,0 +1,354 @@
+************************
+*   List of Command Card
+************************
+
+DIM M
+DERIV RAD
+DAMP
+BUILD
+PLOT
+
+****
+*OK*
+****
+
+**********************  
+*  Flight Conditions *
+**********************
+*   WT      Vehicle Weight
+*   LOOP    Program Looping Control
+*              1 = vary altitude and mach together, default)
+*              2 = vary Mach, at fixed altitude
+*              3 = vary altitude, at fixed Mach
+*   NMACH   Number of Mach numbers or velocities to be run, max of 20
+*           Note: This parameter, along with NALT, may affect the
+*           proper setting of the LOOP control parameter. 
+*   MACH    Array(20) Values of freestream Mach number   
+*   NALPHA  Number of angles of attack to be run, max of 20
+*   ALSCHD  Array(20) Values of angles of attack, in ascending order
+*   NALT    Number of atmospheric conditions to be run, max of 20
+*           input as either altitude or pressure and temperature
+*           Note: This parameter, along with NMACH, may affect the
+*           proper setting of the LOOP control parameter. 
+*   ALT     Array(20) Values of geometric altitude
+*           Number of altitude and values. Note, Atmospheric conditions 
+*           are input either as altitude or pressure and temperature. (MAX 20)
+*   GAMMA   Flight path angle
+
+ $FLTCON WT=1.0,NMACH=1.0,MACH=0.03,
+			NALPHA=20.0,
+			ALSCHD(1)=-2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0,
+             8.0, 9.0, 10.0, 12.0, 14.0, 16.0, 18.0, 19.0, 20.0, 25.0,
+			NALT=1.0,ALT(1)=10.0,
+			GAMMA=0.0,LOOP=1.0$
+			
+****
+*OK*
+****
+			
+*************************  
+*  Reference Parameters *   pg 29
+*************************
+*   SREF    Reference area value of theoretical wing area used by program
+*           if not input
+*   CBARR   Longitudinal reference length value of theoritcal wing
+*           Mean Aerodynamic Chord used by program if not input
+*   BLREF   Lateral reference length value of wing span used by program
+
+* $OPTINS BLREF=0.7,SREF=0.023$
+
+**************************************
+* Group II     Synthesis Parameters  *    page 33
+**************************************
+*   XCG     Longitudinal location of cg (moment ref. center)
+*   ZCG     Vertical location of CG relative to reference plane
+*   XW      Longitudinal location of theoretical wing apex (where
+*           leading edge would intersect long axis)
+*   ZW      Vertical location of theoretical wing apex relative to
+*           reference plane
+*   ALIW    Wing root chord incident angle measured from reference plane
+*   XH      Longitudinal location of theoretical horizontal tail apex. 
+*           If HINAX is input, XH and ZH are evaluated at zero incidence.
+*   ZH      Vertical location of theoretical horizontal tail apex
+*           relative to reference plane. If HINAX is input, XH and ZH
+*           are evaluated at zero incidence.
+*   ALIH    Horizontal tail root chord incidence angle measured from
+*           reference plane
+*   XV      Longitudinal location of theoretical vertical tail apex
+*   XVF     Longitudinal location of theoretical ventral fin apex
+*   ZV      Vertical location of theoretical vertical tail apex
+*           This kinda makes sense only for twin tails that are canted 
+*   ZVF     Vertical location of theoretical ventral fin apex
+*           This kinda makes sense only for twin tails that are canted 
+*   SCALE   Vehicle scale factor (multiplier to input dimensions)
+*   VERTUP  Vertical panel above reference plane (default=true)
+*   HINAX   Longitudinal location of horizontal tail hinge axis.
+*           Required only for all-moveable horizontal tail trim option.
+
+ $SYNTHS XCG=0.28,ZCG=0.0,
+		XW=0.24,ZW=0.05,
+		ALIW=1.0,
+		XH=0.80,ZH=0.035,ALIH=0.0,
+		XV=0.77,ZV=0.035,
+		VERTUP=.TRUE.$
+
+****
+*OK*
+****
+
+	
+	
+**********************************  
+*  Body Configuration Parameters *    page 36
+**********************************
+*   NX      Number of longitudinal body stations at which data is
+*           specified, max of 20
+*   X       Array(20) Longitudinal distance measured from arbitray location
+*   S       Array(20) Cross sectional area at station. See note above.
+*   P       Array(20) Periphery at station Xi. See note above.
+*   R       Array(20) Planform half width at station Xi. See note above.
+*   ZU      Array(20) Z-coordinate at upper body surface at station Xi
+*           (positive when above centerline)
+*           [Only required for subsonic asymmetric bodies]
+*   ZL      Array(20) Z-coordinate at lower body surface at station Xi
+*           (negative when below centerline)
+*           [Only required for subsonic asymmetric bodies]
+*   BNOSE   Nosecone type  1.0 = conical (rounded), 2.0 = ogive (sharp point)
+*           [Not required in subsonic speed regime]
+*   BTAIL   Tailcone type  1.0 = conical, 2.0 = ogive, omit for lbt = 0
+*           [Not required in subsonic speed regime]
+*   BLN     Length of body nose
+*           Not required in subsonic speed regime
+*   BLA     Length of cylindrical afterbody segment, =0.0 for nose alone
+*           or nose-tail configuration
+*           Not required in subsonic speed regime
+*   DS      Nose bluntness diameter, zero for sharp nosebodies
+*           [Hypersonic speed regime only]
+*   ITYPE   1.0 = straight wing, no area rule
+*           2.0 = swept wing, no area rule (default)
+*           3.0 = swept wing, area rule
+*   METHOD  1.0 = Use existing methods (default)
+*           2.0 = Use Jorgensen method
+
+ $BODY NX=9.0,X(1)=0.0,0.01,0.05,0.14,0.18,0.22,0.46,0.47,0.85,
+		R(1)=0.0,0.02,0.04,0.045,0.045,0.045,0.045,0.04,0.02,
+		ZU(1)=0.0,0.008,0.03,0.053,0.053,0.1,0.12,0.04,0.03,
+		ZL(1)=0.0,-0.008,-0.03,-0.038,-0.040,-0.0385,-0.022,-0.021,0.0,
+		BNOSE=2.0$
+		
+		
+****
+*OK*
+****
+
+
+**********************************
+*         Wing planform variables   pg 37-38
+**********************************
+*   CHRDR   Chord root
+*   CHRDBP  Chord at breakpoint. Not required for straight 
+*           tapered planform.
+*   CHRDTP  Tip chord
+*   SSPN    Semi-span theoretical panel from theoretical root chord
+*   SSPNE   Semi-span exposed panel, See diagram on pg 37.
+*   SSPNOP  Semi-span outboard panel. Not required for straight 
+*           tapered planform.
+*   SAVSI   Inboard panel sweep angle
+*   SAVSO   Outboard panel sweep angle
+*   CHSTAT  Reference chord station for inboard and outboard panel 
+*           sweep angles, fraction of chord
+*   TWISTA  Twist angle, negative leading edge rotated down (from 
+*           exposed root to tip)
+*   SSPNDD  Semi-span of outboard panel with dihedral
+*   DHDADI  Dihedral angle of inboard panel
+*   DHDADO  Dihedral angle of outboard panel. If DHDADI=DHDADO only 
+*           input DHDADI
+*   TYPE    1.0 - Straight tapered planform
+*           2.0 - Double delta planform (aspect ratio <= 3)
+*           3.0 - Cranked planform (aspect ratio > 3)
+ $WGPLNF CHRDTP=0.15,CHRDR=0.198,
+		SSPNE=0.61,SSPN=0.655,
+		TWISTA=0.0,
+		SAVSI=0.0,SAVSO=0.0,
+		CHSTAT=0.25,TYPE=1.0$
+
+NACA-W-4-1410
+	
+SAVE
+CASEID MAIN: Bixler
+NEXT CASE
+
+****
+*OK*
+****
+
+*************************************************************
+*    Asymmetrical Control Deflection parameters : Ailerons
+*************************************************************
+*   STYPE   Type
+*              1.0  Flap spoiler on wing
+*              2.0  Plug spoiler on wing
+*              3.0  Spoiler-slot-deflection on wing
+*              4.0  Plain flap aileron
+*              5.0  Differentially deflected all moveable horizontal tail
+*   NDELTA  Number of control deflection angles, required for all controls,
+*           max of 9
+*   DELTAL  Defelction angle for left hand plain flap aileron or left
+*           hand panel all moveable horizontal tail, measured in
+*           vertical plane of symmetry
+*   DELTAR  Defelction angle for right hand plain flap aileron or right
+*           hand panel all moveable horizontal tail, measured in
+*           vertical plane of symmetry
+*   SPANFI  Span location of inboard end of flap or spoiler control,
+*           measured perpendicular to vertical plane of symmetry
+*   SPANFO  Span location of outboard end of flap or spoiler control,
+*           measured perpendicular to vertical plane of symmetry
+*   PHETE   Tangent of airfoil trailing edge angle based on ordinates
+*           at x/c - 0.90 and 0.99
+*   CHRDFI  Aileron chord at inboard end of plain flap aileron,
+*           measured parallel to longitudinal axis
+*   CHRDFO  Aileron chord at outboard end of plain flap aileron,
+*           measured parallel to longitudinal axis
+*   DELTAD  Projected height of deflector, spoiler-slot-deflector
+*           control, fraction of chord
+*   DELTAS  Projected height of spoiler, flap spoiler, plug spoiler and
+*           spoiler-slot-deflector control; fraction of chord
+*   XSOC    Distance from wing leading edge to spoiler lip measured
+*           parallel to streamwise wng chord, flap and plug spoilers,
+*           fraction of chord
+*   XSPRME  Distance from wing leading edge to spoiler hinge line
+*           measured parallel to streamwise chord, flap spoiler,
+*           plug spoiler and spoiler-slot-deflector control, fraction 
+*           of chord
+*   HSOC    Projected height of spoiler measured from and normal to
+*           airfoil mean line, flap spoiler, plug spoiler and spoiler-
+*           slot-reflector, fraction of chord
+
+ $ASYFLP STYPE=4.0,
+		NDELTA=9.0,
+		DELTAL(1)=0.0,1.0,3.0,5.0,8.0,10.0,15.0,20.0,25.0,
+		DELTAR(1)=0.0,-1.0,-3.0,-5.0,-8.0,-10.0,-15.0,-20.0,-25.0,
+		SPANFI=0.28,SPANFO=0.51,
+		CHRDFI=0.055,CHRDFO=0.043$
+
+CASEID AILERONS
+SAVE
+NEXT CASE
+
+*************************************************
+*       Horizontal Tail Sectional Characteristics  pg 39-40
+*************************************************
+NACA-H-4-0010
+
+		
+*********************************************
+*         Horizontal Tail planform variables   pg 37-38
+*********************************************
+
+ $HTPLNF CHRDTP=0.0883,CHRDR=0.1036,
+		SSPNE=0.2194,SSPN=0.247,
+		TWISTA=0.0,
+		SAVSI=0.0,
+		CHSTAT=0.25,TYPE=1.0$
+
+
+*********************************************
+*         Vertical Tail planform variables   pg 37-38
+*********************************************
+NACA-V-4-0010
+
+******************************************
+*         Vertical Tail planform variables   pg 37-38
+******************************************
+ $VTPLNF CHRDTP=0.0792,CHRDR=0.128,
+		SSPNE=0.179,SSPN=0.209,
+		TWISTA=0.0,
+		SAVSI=10.0,
+		CHSTAT=0.25,TYPE=1.0$
+
+
+***********************************
+*    Elevator Deflection parameters
+***********************************
+*   FTYPE   Flap type
+*              1.0  Plain flaps
+*              2.0  Single slotted flaps
+*              3.0  Fowler flaps
+*              4.0  Double slotted flaps
+*              5.0  Split flaps
+*              6.0  Leading edge flap
+*              7.0  Leading edge slats
+*              8.0  Krueger
+*   NDELTA  Number of flap or slat deflection angles, max of 9
+*   DELTA   Flap deflection angles measured streamwise
+*           (NDELTA values in array)
+*   PHETE   Tangent of airfoil trailine edge angle based on ordinates at
+*           90 and 99 percent chord
+*   PHETEP  Tangent of airfoil trailing edge angle based on ordinates at
+*           95 and 99 percent chord
+*   CHRDFI  Flap chord at inboard end of flap, measured parallel to
+*           longitudinal axis
+*   CHRDFO  Flap chord at outboard end of flap, measured parallel to
+*           longitudinal axis
+*   SPANFI  Span location of inboard end of flap, measured perpendicular
+*           to vertical plane of symmetry
+*   SPANFO  Span location of outboard end of flap, measured perpendicular
+*           to vertical plane of symmetry
+*   CPRMEI  Total wing chord at inboard end of flap (translating devices 
+*           only) measured parallel to longitudinal axis
+*           (NDELTA values in array)
+*              Single-slotted, Fowler, Double-slotted, leading-edge
+*              slats, Krueger flap, jet flap
+*   CPRMEO  Total wing chord at outboard end of flap (translating devices
+*           only) measured parallel to longitudinal axis
+*           (NDELTA values in array)
+*              Single-slotted, Fowler, Double-slotted, leading-edge
+*              slats, Krueger flap, jet flap
+*   CAPINS  (double-slotted flaps only) (NDELTA values in array)
+*   CAPOUT  (double-slotted flaps only) (NDELTA values in array)
+*   DOSDEF  (double-slotted flaps only) (NDELTA values in array)
+*   DOBCIN  (double-slotted flaps only)
+*   DOBCOT  (double-slotted flaps only)
+*   SCLD    Increment in section lift coefficient due to
+*           deflecting flap to angle DELTA[i]      (optional)
+*           (NDELTA values in array)
+*   SCMD    Increment in section pitching moment coefficient due to
+*           deflecting flap to angle DELTA[i]      (optional)
+*           (NDELTA values in array)
+*   CB      Average chord of the balance    (plain flaps only)
+*   TC      Average thickness of the control at hinge line
+*           (plain flaps only)
+*   NTYPE   Type of nose
+*              1.0  Round nose flap
+*              2.0  Elliptic nose flap
+*              3.0  Sharp nose flap
+*   JETFLP  Type of flap
+*              1.0  Pure jet flap
+*              2.0  IBF
+*              3.0  EBF
+*   CMU     Two-dimensional jet efflux coefficient
+*   DELJET  Jet deflection angle
+*           (NDELTA values in array)
+*   EFFJET  EBF Effective jet deflection angle
+*           (NDELTA values in array)
+
+ $SYMFLP FTYPE=1.0,NTYPE=1.0,
+		NDELTA=9.0,
+		DELTA(1)=-20.0, -10.0, -5.0, -1.0, 0.0, 1.0, 5.0, 10.0, 20.0,
+		CHRDFI=0.035,CHRDFO=0.034,
+		SPANFI=0.01,SPANFO=0.173$
+		
+****
+*OK*
+****
+	
+CASEID TOTAL: Bixler
+			
+
+
+
+
+
+
+
+
