@@ -77,7 +77,4 @@ g4 = [0;0;-M4*G;0;0;0];
 %   
 %% Adaptive part
 
-Am = [zeros(6,6) eye(6); -Kp -Kv];
-Bm = [zeros(6,6); eye(6)];
-Q = eye(12);
-P = lyap(Am',Q);
+A
