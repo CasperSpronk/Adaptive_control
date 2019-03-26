@@ -108,6 +108,12 @@ for t = 0:N-1
                 end
                 RHS_U(i,:) = U_k';
                 LHS_U(i,:) = sigma(X_k)';
+                % Generate target for updating W
+                X_k_plus_1 = %TODO
+                J_k_plus_1 = %TODO
+                J_k_t = %TODO
+                RHS_J(i,:) = J_k_t;
+                LHS_J(i,:) = phi(X_k)';
             end
             if det(LHS_U'*LHS_U)==0
                 fprintf('det sigma = 0\n');
@@ -120,14 +126,7 @@ for t = 0:N-1
                 fprintf('det phi = 0\n');
                 break;
             end
-            % Step 9
-            % Generate target for updating W
-            X_k_plus_1 = %TODO
-            J_k_plus_1 = %TODO
-            J_k_t = %TODO
-            RHS_J(i,:) = J_k_t;
-            LHS_J(i,:) = phi(X_k)';
-            
+            % Step 9   
             FinalW(:,k) = %TODO
         end
 
