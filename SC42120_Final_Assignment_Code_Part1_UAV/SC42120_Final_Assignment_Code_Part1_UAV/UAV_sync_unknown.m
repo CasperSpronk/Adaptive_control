@@ -69,12 +69,6 @@ I4 = 8*[0.1 0 -0.01;
 D4 = [eye(3)*M4 zeros(3,3);
       zeros(3,3) I4];
 g4 = [0;0;-M4*G;0;0;0];
-
-%% run simulink
-% 
-% only_node1 = sim('UAV_sync_unknown_sim.slx');
-% 
-%   
 %% Adaptive part
 
 Am = [zeros(6,6) eye(6); -Kp -Kv];
