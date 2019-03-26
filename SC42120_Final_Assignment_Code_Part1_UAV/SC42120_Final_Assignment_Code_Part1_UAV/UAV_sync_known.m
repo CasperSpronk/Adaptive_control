@@ -70,9 +70,16 @@ D4 = [eye(3)*M4 zeros(3,3);
       zeros(3,3) I4];
 g4 = [0;0;-M4*G;0;0;0];
 
-%% run simulink
+%% Simulate
+sim('UAV_sync_known_sim.slx');
 
-only_node1 = sim('UAV_sync_known_sim.slx');
-
+%% Plots
+plot3(inertial_pos_node_0(:,2),inertial_pos_node_0(:,1),-inertial_pos_node_0(:,3))
+grid on
+hold on
+plot3(inertial_pos_node_1(:,2),inertial_pos_node_1(:,1),-inertial_pos_node_1(:,3))
+plot3(inertial_pos_node_2(:,2),inertial_pos_node_2(:,1),-inertial_pos_node_2(:,3))
+plot3(inertial_pos_node_3(:,2),inertial_pos_node_3(:,1),-inertial_pos_node_3(:,3))
+plot3(inertial_pos_node_4(:,2),inertial_pos_node_4(:,1),-inertial_pos_node_4(:,3))
   
 
