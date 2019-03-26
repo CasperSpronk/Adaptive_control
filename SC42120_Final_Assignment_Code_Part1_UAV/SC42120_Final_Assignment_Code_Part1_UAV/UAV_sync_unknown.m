@@ -75,3 +75,14 @@ Am = [zeros(6,6) eye(6); -Kp -Kv];
 Bm = [zeros(6,6); eye(6)];
 Q = eye(12);
 P = lyap(Am',Q);
+
+%% Simulate
+sim('UAV_sync_unknown_sim.slx');
+%% Plots
+plot3(inertial_pos_node_0(:,2),inertial_pos_node_0(:,1),-inertial_pos_node_0(:,3))
+grid on
+hold on
+plot3(inertial_pos_node_1(:,2),inertial_pos_node_1(:,1),-inertial_pos_node_1(:,3))
+plot3(inertial_pos_node_2(:,2),inertial_pos_node_2(:,1),-inertial_pos_node_2(:,3))
+plot3(inertial_pos_node_3(:,2),inertial_pos_node_3(:,1),-inertial_pos_node_3(:,3))
+plot3(inertial_pos_node_4(:,2),inertial_pos_node_4(:,1),-inertial_pos_node_4(:,3))
