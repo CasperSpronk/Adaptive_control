@@ -73,70 +73,23 @@ g4 = [0;0;-M4*G;0;0;0];
 
 Am = [zeros(6,6) eye(6); -Kp -Kv];
 Bm = [zeros(6,6); eye(6)];
-Q = 20*eye(12);
+Q = eye(12);
 P = lyap(Am',Q);
 
 %% Gaps
 y_gap = 100;
 x_gap = 50;
 %% Simulate
-tic
 sim('UAV_sync_unknown_gap_sim.slx');
-runtime=toc
 %% Plots
-figure(1)
-title("UAV's trajectories")
-plot3(inertial_pos_node_0.Data(:,2),inertial_pos_node_0.Data(:,1),-inertial_pos_node_0.Data(:,3))
+plot3(inertial_pos_node_0(:,2),inertial_pos_node_0(:,1),-inertial_pos_node_0(:,3))
 grid on
 hold on
-plot3(inertial_pos_node_1.Data(:,2),inertial_pos_node_1.Data(:,1),-inertial_pos_node_1.Data(:,3))
-plot3(inertial_pos_node_2.Data(:,2),inertial_pos_node_2.Data(:,1),-inertial_pos_node_2.Data(:,3))
-plot3(inertial_pos_node_3.Data(:,2),inertial_pos_node_3.Data(:,1),-inertial_pos_node_3.Data(:,3))
-plot3(inertial_pos_node_4.Data(:,2),inertial_pos_node_4.Data(:,1),-inertial_pos_node_4.Data(:,3))
+plot3(inertial_pos_node_1(:,2),inertial_pos_node_1(:,1),-inertial_pos_node_1(:,3))
+plot3(inertial_pos_node_2(:,2),inertial_pos_node_2(:,1),-inertial_pos_node_2(:,3))
+plot3(inertial_pos_node_3(:,2),inertial_pos_node_3(:,1),-inertial_pos_node_3(:,3))
+plot3(inertial_pos_node_4(:,2),inertial_pos_node_4(:,1),-inertial_pos_node_4(:,3))
 
-t=g1_11.time;
-%%  Estimated parameters from \Theta_{D_1}
-figure(2)
-title('Estimate of m1')
-xlabel('time [s]')
-grid on, hold on
-plot(t,m1.signals.values(:,:),'b')
-plot(t,M1*ones(1,length(t)),'g-.')
-%plot(t,m3.signals.values(:,:),'r--')
-%plot(t,M3*ones(1,length(t)),'c-.')
-
-figure(3)
-grid on, hold on
-title('\Theta_{D_1}(4,4)')
-plot(t,Ix1.signals.values(:,:),'b')
-plot(t,I1(1,1)*ones(1,length(t)),'g-.')
-
-figure(4)
-grid on, hold on
-title('\Theta_{D_1}(6,6)')
-plot(t,Iz1.signals.values(:,:),'b')
-plot(t,I1(3,3)*ones(1,length(t)),'g-.')
-
-%%
-
-figure(5)
-title('\Theta_{C_1}(4,4)')
-xlabel('time [s]')
-grid on, hold on
-plot(t,c1_44.signals.values(:,:),'b')
-plot(t,I1(1,1)*ones(1,length(t)),'g-.')
-
-figure(6)
-grid on, hold on
-title('\Theta_{C_1}(4,10)')
-plot(t,c1_410.signals.values(:,:),'b')
-plot(t,I1(3,3)*ones(1,length(t)),'g-.')
-
-figure(7)
-grid on, hold on
-title('\Theta_{C_1}(6,12)')
-plot(t,c1_612.signals.values(:,:),'b')
-plot(t,I1(3,3)*ones(1,length(t)),'g-.')
 
 
 
