@@ -75,8 +75,6 @@ sim('UAV_sync_known_sim.slx');
 
 %% Plots
 close all
-t = time;
-as = 10;
 
 figure_num = 1;
 figure("Name","UAV's trajectories",'NumberTitle','off')
@@ -97,10 +95,10 @@ zlabel({'z location','[m]'})
 figure_num = figure_num + 1;
 figure("Name","error x with respect to node 0",'NumberTitle','off')
 len = length(inertial_pos_node_0);
-error_node1 = inertial_pos_node_0(:,2) - inertial_pos_node_1(:,2);
-error_node2 = inertial_pos_node_0(:,2) - inertial_pos_node_2(:,2);
-error_node3 = inertial_pos_node_0(:,2) - inertial_pos_node_3(:,2);
-error_node4 = inertial_pos_node_0(:,2) - inertial_pos_node_4(:,2);
+error_node1 = inertial_pos_node_0(:,2) - inertial_pos_node_1(:,2) + 100 * ones(len,1);
+error_node2 = inertial_pos_node_0(:,2) - inertial_pos_node_2(:,2) + 200 * ones(len,1);
+error_node3 = inertial_pos_node_0(:,2) - inertial_pos_node_3(:,2) - 100 * ones(len,1);
+error_node4 = inertial_pos_node_0(:,2) - inertial_pos_node_4(:,2) - 200 * ones(len,1);
 plot(t,error_node1(:,:),'g')
 hold on
 grid on
@@ -108,7 +106,7 @@ plot(t,error_node2(:,:),'r')
 plot(t,error_node3(:,:),'b')
 plot(t,error_node4(:,:),'y')
 title("error x with respect to node 0")
-ylim([-as,as])
+ylim([-2,2])
 legend("Node 1","Node 2","Node 3","Node 4")
 xlabel({'time','[s]'})
 ylabel({'error','[m]'})
@@ -119,14 +117,14 @@ len = length(inertial_pos_node_0);
 error_node1 = inertial_pos_node_0(:,1) - inertial_pos_node_1(:,1);
 error_node2 = inertial_pos_node_0(:,1) - inertial_pos_node_2(:,1);
 error_node3 = inertial_pos_node_0(:,1) - inertial_pos_node_3(:,1);
-error_node4 = inertial_pos_node_0(:,1) - inertial_pos_node_4(:,1);
+error_node4 = inertial_pos_node_0(:,1) - inertial_pos_node_4(:,1) - 100 * ones(len,1);
 plot(t,error_node1(:,:),'g')
 hold on
 grid on
 plot(t,error_node2(:,:),'r')
 plot(t,error_node3(:,:),'b')
 plot(t,error_node4(:,:),'y')
-ylim([-as,as])
+ylim([-2,2])
 legend("Node 1","Node 2","Node 3","Node 4")
 title("error y with respect to node 0")
 xlabel({'time','[s]'})
@@ -146,7 +144,7 @@ grid on
 plot(t,error_node2(:,:),'r')
 plot(t,error_node3(:,:),'b')
 plot(t,error_node4(:,:),'y')
-ylim([-as,as])
+ylim([-2,2])
 legend("Node 1","Node 2","Node 3","Node 4")
 title("error z with respect to node 0")
 xlabel({'time','[s]'})

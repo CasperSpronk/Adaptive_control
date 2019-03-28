@@ -83,59 +83,141 @@ x_gap = 50;
 tic
 sim('UAV_sync_unknown_gap_sim.slx');
 runtime=toc
+%%
+t=D1_hat.time;
+
 %% Plots
-figure(1)
-title("UAV's trajectories")
-plot3(inertial_pos_node_0.Data(:,2),inertial_pos_node_0.Data(:,1),-inertial_pos_node_0.Data(:,3))
+close all
+
+figure_num = 1;
+figure("Name","UAV's trajectories",'NumberTitle','off')
+plot3(inertial_pos_node_0(:,2),inertial_pos_node_0(:,1),-inertial_pos_node_0(:,3))
 grid on
 hold on
-plot3(inertial_pos_node_1.Data(:,2),inertial_pos_node_1.Data(:,1),-inertial_pos_node_1.Data(:,3))
-plot3(inertial_pos_node_2.Data(:,2),inertial_pos_node_2.Data(:,1),-inertial_pos_node_2.Data(:,3))
-plot3(inertial_pos_node_3.Data(:,2),inertial_pos_node_3.Data(:,1),-inertial_pos_node_3.Data(:,3))
-plot3(inertial_pos_node_4.Data(:,2),inertial_pos_node_4.Data(:,1),-inertial_pos_node_4.Data(:,3))
+plot3(inertial_pos_node_1(:,2),inertial_pos_node_1(:,1),-inertial_pos_node_1(:,3))
+plot3(inertial_pos_node_2(:,2),inertial_pos_node_2(:,1),-inertial_pos_node_2(:,3))
+plot3(inertial_pos_node_3(:,2),inertial_pos_node_3(:,1),-inertial_pos_node_3(:,3))
+plot3(inertial_pos_node_4(:,2),inertial_pos_node_4(:,1),-inertial_pos_node_4(:,3))
+legend("Node 0","Node 1","Node 2","Node 3","Node 4")
+title("UAV's trajectories")
+xlabel({'x location','[m]'})
+ylabel({'y location','[m]'})
+zlabel({'z location','[m]'})
 
-t=g1_11.time;
+
+figure_num = figure_num + 1;
+figure("Name","error x with respect to node 0",'NumberTitle','off')
+len = length(inertial_pos_node_0);
+error_node1 = inertial_pos_node_0(:,2) - inertial_pos_node_1(:,2) + 100 * ones(len,1);
+error_node2 = inertial_pos_node_0(:,2) - inertial_pos_node_2(:,2) + 200 * ones(len,1);
+error_node3 = inertial_pos_node_0(:,2) - inertial_pos_node_3(:,2) - 100 * ones(len,1);
+error_node4 = inertial_pos_node_0(:,2) - inertial_pos_node_4(:,2) - 200 * ones(len,1);
+plot(t,error_node1(:,:),'g')
+hold on
+grid on
+plot(t,error_node2(:,:),'r')
+plot(t,error_node3(:,:),'b')
+plot(t,error_node4(:,:),'y')
+title("error x with respect to node 0")
+ylim([-2,2])
+legend("Node 1","Node 2","Node 3","Node 4")
+xlabel({'time','[s]'})
+ylabel({'error','[m]'})
+
+figure_num = figure_num + 1;
+figure("Name","error y with respect to node 0",'NumberTitle','off')
+len = length(inertial_pos_node_0);
+error_node1 = inertial_pos_node_0(:,1) - inertial_pos_node_1(:,1) - 50 * ones(len,1);
+error_node2 = inertial_pos_node_0(:,1) - inertial_pos_node_2(:,1) - 100 * ones(len,1);
+error_node3 = inertial_pos_node_0(:,1) - inertial_pos_node_3(:,1) - 50 * ones(len,1);
+error_node4 = inertial_pos_node_0(:,1) - inertial_pos_node_4(:,1) - 100 * ones(len,1);
+plot(t,error_node1(:,:),'g')
+hold on
+grid on
+plot(t,error_node2(:,:),'r')
+plot(t,error_node3(:,:),'b')
+plot(t,error_node4(:,:),'y')
+ylim([-2,2])
+legend("Node 1","Node 2","Node 3","Node 4")
+title("error y with respect to node 0")
+xlabel({'time','[s]'})
+ylabel({'error','[m]'})
+
+
+figure_num = figure_num + 1;
+figure("Name","error z with respect to node 0",'NumberTitle','off')
+len = length(inertial_pos_node_0);
+error_node1 = inertial_pos_node_0(:,3) - inertial_pos_node_1(:,3);
+error_node2 = inertial_pos_node_0(:,3) - inertial_pos_node_2(:,3);
+error_node3 = inertial_pos_node_0(:,3) - inertial_pos_node_3(:,3); 
+error_node4 = inertial_pos_node_0(:,3) - inertial_pos_node_4(:,3);
+plot(t,error_node1(:,:),'g')
+hold on
+grid on
+plot(t,error_node2(:,:),'r')
+plot(t,error_node3(:,:),'b')
+plot(t,error_node4(:,:),'y')
+ylim([-2,2])
+legend("Node 1","Node 2","Node 3","Node 4")
+title("error z with respect to node 0")
+xlabel({'time','[s]'})
+ylabel({'error','[m]'})
+
+
 %%  Estimated parameters from \Theta_{D_1}
-figure(2)
+figure_num = figure_num + 1;
+figure(figure_num)
 title('Estimate of m1')
 xlabel('time [s]')
 grid on, hold on
-plot(t,m1.signals.values(:,:),'b')
-plot(t,M1*ones(1,length(t)),'g-.')
+m1=D1_hat.signals.values(1,1,:);
+plot(t,m1(:,:),'b')
+plot(t,M1*ones(1,length(t)),'g')
+
 %plot(t,m3.signals.values(:,:),'r--')
 %plot(t,M3*ones(1,length(t)),'c-.')
 
-figure(3)
+figure_num = figure_num + 1;
+figure(figure_num)
 grid on, hold on
 title('\Theta_{D_1}(4,4)')
-plot(t,Ix1.signals.values(:,:),'b')
+ix1 = D1_hat.signals.values(4,4,:);
+plot(t,ix1(:,:),'b')
 plot(t,I1(1,1)*ones(1,length(t)),'g-.')
 
-figure(4)
+figure_num = figure_num + 1;
+figure(figure_num)
 grid on, hold on
 title('\Theta_{D_1}(6,6)')
-plot(t,Iz1.signals.values(:,:),'b')
+iz1 = D1_hat.signals.values(6,6,:);
+plot(t,iz1(:,:),'b')
 plot(t,I1(3,3)*ones(1,length(t)),'g-.')
 
 %%
 
-figure(5)
+figure_num = figure_num + 1;
+figure(figure_num)
 title('\Theta_{C_1}(4,4)')
 xlabel('time [s]')
 grid on, hold on
-plot(t,c1_44.signals.values(:,:),'b')
+c1_44 = C1_hat.signals.values(4,4,:);
+plot(t,c1_44(:,:),'b')
 plot(t,I1(1,1)*ones(1,length(t)),'g-.')
-
-figure(6)
+%%
+figure_num = figure_num + 1;
+figure(figure_num)
 grid on, hold on
 title('\Theta_{C_1}(4,10)')
-plot(t,c1_410.signals.values(:,:),'b')
+c1_410 = C1_hat.signals.values(4,10,:);
+plot(t,c1_410(:,:),'b')
 plot(t,I1(3,3)*ones(1,length(t)),'g-.')
 
-figure(7)
+figure_num = figure_num + 1;
+figure(figure_num)
 grid on, hold on
 title('\Theta_{C_1}(6,12)')
-plot(t,c1_612.signals.values(:,:),'b')
+c1_612 = C1_hat.signals.values(6,12,:);
+plot(t,c1_612(:,:),'b')
 plot(t,I1(3,3)*ones(1,length(t)),'g-.')
 
 
