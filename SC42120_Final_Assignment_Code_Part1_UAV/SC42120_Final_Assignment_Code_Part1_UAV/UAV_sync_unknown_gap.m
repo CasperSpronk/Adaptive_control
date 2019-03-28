@@ -24,7 +24,7 @@ g1 = [0;0;-M1*G;0;0;0];
 %% setup agent 2
 M2 = 30;
 % initial condition [x,y,z,phi,thetha,psi]'
-init_pos2 = [-100, 1000, -100]';
+init_pos2 = [-100, -1000, -100]';
 init_eul2 = [1, 0.1, 1]';
 % initial condition [u,v,w,p,q,r]'
 init_vel2 = [5, 0, 0]';
@@ -89,6 +89,7 @@ t=D1_hat.time;
 %% Plots
 close all
 
+as = 10;
 figure_num = 1;
 figure("Name","UAV's trajectories",'NumberTitle','off')
 plot3(inertial_pos_node_0(:,2),inertial_pos_node_0(:,1),-inertial_pos_node_0(:,3))
@@ -119,7 +120,7 @@ plot(t,error_node2(:,:),'r')
 plot(t,error_node3(:,:),'b')
 plot(t,error_node4(:,:),'y')
 title("error x with respect to node 0")
-ylim([-2,2])
+ylim([-as,as])
 legend("Node 1","Node 2","Node 3","Node 4")
 xlabel({'time','[s]'})
 ylabel({'error','[m]'})
@@ -137,7 +138,7 @@ grid on
 plot(t,error_node2(:,:),'r')
 plot(t,error_node3(:,:),'b')
 plot(t,error_node4(:,:),'y')
-ylim([-2,2])
+ylim([-as,as])
 legend("Node 1","Node 2","Node 3","Node 4")
 title("error y with respect to node 0")
 xlabel({'time','[s]'})
@@ -157,7 +158,7 @@ grid on
 plot(t,error_node2(:,:),'r')
 plot(t,error_node3(:,:),'b')
 plot(t,error_node4(:,:),'y')
-ylim([-2,2])
+ylim([-as,as])
 legend("Node 1","Node 2","Node 3","Node 4")
 title("error z with respect to node 0")
 xlabel({'time','[s]'})

@@ -24,7 +24,7 @@ g1 = [0;0;-M1*G;0;0;0];
 %% setup agent 2
 M2 = 30;
 % initial condition [x,y,z,phi,thetha,psi]'
-init_pos2 = [-100, -1000, -100]';
+init_pos2 = [-100, 1000, -100]';
 init_eul2 = [1, 0.1, 1]';
 % initial condition [u,v,w,p,q,r]'
 init_vel2 = [5, 0, 0]';

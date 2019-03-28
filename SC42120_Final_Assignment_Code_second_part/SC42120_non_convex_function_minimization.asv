@@ -109,9 +109,9 @@ for t = 0:N-1
                 RHS_U(i,:) = U_k';
                 LHS_U(i,:) = sigma(X_k)';
                 % Generate target for updating W
-                X_k_plus_1 = X_k + f_bar(X_k) + g_bar*RHS_U(i,:);
-                J_k_plus_1 = FinalW(:,k)'*phi(X_k_plus_1);
-                J_k_t = Q_bar(X_k) + RHS_U'*R_bar*RHS_U;
+                X_k_plus_1 = %TODO
+                J_k_plus_1 = %TODO
+                J_k_t = %TODO
                 RHS_J(i,:) = J_k_t;
                 LHS_J(i,:) = phi(X_k)';
             end
@@ -127,7 +127,7 @@ for t = 0:N-1
                 break;
             end
             % Step 9   
-            FinalW(:,k) = inv(LHS_J'*LHS_J)*LHS_J'*RHS_J;
+            FinalW(:,k) = %TODO
         end
 
         if isnan(FinalW(:,k))
@@ -148,8 +148,4 @@ toc
 %% Plot Results
 
 x=-StateSelectionWidth:dt:StateSelectionWidth;
-
-
-
-
 
