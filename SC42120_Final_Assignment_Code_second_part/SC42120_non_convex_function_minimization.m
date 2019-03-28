@@ -149,7 +149,16 @@ toc
 
 x=-StateSelectionWidth:dt:StateSelectionWidth;
 
+figure
+plot(x,psi(x))
+figure
 
+%PHI=reshape(phi(x),[8 length(x)/8]);
+
+% for l = 1:length(x)
+%     PHI(:,l)=phi(x);
+% end
+% plot(x,FinalW(:,end)'*PHI)
 
 
 
