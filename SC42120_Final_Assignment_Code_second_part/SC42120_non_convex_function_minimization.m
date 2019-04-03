@@ -14,7 +14,7 @@
 %%% Vittorio Giammarino
 %%% DSCS, Tu Delft, 2018
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clc; clear;
+clc; clear; close all;
 
 %% Initialization
 
@@ -39,8 +39,8 @@ X_k =  (rand(n,1)*2-1); %Initial states selection
 
 % Basis functions
 phi = @(x) [1 x x.^2 x.^3 x.^4 x.^5 x.^6 x.^7]';
-dphi_dx = @(x) [0 1 2*x 3*x^2 4*x^3 5*x^4 6*x^5 7*x^6]';
-sigma = @(x) [1 x x^2 x^3 x^4 x^5 x^6]';
+dphi_dx = @(x) [0 1 2*x 3*x.^2 4*x.^3 5*x.^4 6*x.^5 7*x.^6]';
+sigma = @(x) [1 x x.^2 x.^3 x.^4 x.^5 x.^6]';
 
 % Initializing memory
 FinalW = zeros(length(phi(X_k)),N);
@@ -91,10 +91,10 @@ for t = 0:N-1
                 fprintf('det phi = 0\n');
                 break;
             end
-            FinalW(:,k) = (inv(LHS_J'*LHS_J)*LHS_J'*RHS_J); %DONE
+            FinalW(:,k) = inv(LHS_J' * LHS_J) * LHS_J' * RHS_J;%DONE
         else % Step 3
             for i=1:NoOfEquations % Step 4
-                U_k = 0;
+                U_k(i) = 0;
                 % Step 5
                 X_k =  (rand(1,1)*2-1) * StateSelectionWidth; %Initial states selection
                 
@@ -103,15 +103,18 @@ for t = 0:N-1
                 % beta
                 % like in the paper)
                 for j = 1:MaxEpochNo-1 
-                    X_k_plus_1 = f_bar(X_k) + g_bar*U_k; %DONE
-                    U_k = -0.5*(R_bar)^-1 * g_bar' * (dphi_dx(X_k_plus_1))' * FinalW(:,k); %DONE
+                    %disp("here")
+                    X_k_plus_1 = X_k + f_bar(X_k) + g_bar * U_k(i);%DONE
+                    %disp("X_k = " + X_k_plus_1)
+                    U_k(i) = -0.5 * R_bar^-1 * g_bar * dphi_dx(X_k_plus_1)' * FinalW(:,k+1);%DONE
+                    %disp("U_k(i) = "+ U_k(i))
                 end
-                RHS_U(i,:) = U_k';
+                RHS_U(i,:) = U_k(i)';
                 LHS_U(i,:) = sigma(X_k)';
                 % Generate target for updating W
-                X_k_plus_1 = X_k + f_bar(X_k) + g_bar*RHS_U(i,:); %DONE
-                J_k_plus_1 = FinalW(:,k)'*phi(X_k_plus_1); %DONE
-                J_k_t = Q_bar(X_k) + RHS_U'*R_bar*RHS_U; %DONE
+                X_k_plus_1 = X_k + f_bar(X_k) + g_bar * U_k(i);%DONE
+                J_k_plus_1 = FinalW(:,k+1)' * phi(X_k_plus_1);%DONE
+                J_k_t = Q_bar(X_k) + U_k(i)' * R_bar * U_k(i) + J_k_plus_1;%DONE
                 RHS_J(i,:) = J_k_t;
                 LHS_J(i,:) = phi(X_k)';
             end
@@ -120,14 +123,15 @@ for t = 0:N-1
                 break;
             end
             % Step 8
-            FinalV(:,k) = inv(LHS_U'*LHS_U)*LHS_U'*RHS_U; %DONE
+            FinalV(:,k) = inv(LHS_U' * LHS_U) * LHS_U' * RHS_U;%pinv(sigma(X_k)) * U_k(i);%DONE
 
             if det(LHS_J'*LHS_J)==0
                 fprintf('det phi = 0\n');
                 break;
             end
             % Step 9   
-            FinalW(:,k) = inv(LHS_J'*LHS_J)*LHS_J'*RHS_J; %DONE
+            FinalW(:,k) = inv(LHS_J' * LHS_J) * LHS_J' * RHS_J;%DONE
+            %Q_bar(X_k) + U_k(i)' * R_bar * U_k(i) + FinalW(:,k+1)' * phi(X_k_plus_1);%DONE
         end
 
         if isnan(FinalW(:,k))
@@ -155,11 +159,14 @@ figure
 
 PHI=reshape(phi(x),[8 length(phi(x))/8]);
 
-% for l = 1:length(x)
-%     PHI(:,l)=phi(x);
-% end
-new_x = linspace(-2,2,length(FinalW(:,end)'*PHI));
-plot(new_x,FinalW(:,end)'*PHI)
-
-
+for l = 1:length(x)
+    J0(l) = FinalW(:,1)'* phi(x(l));
+end
+plot(x,J0)
+% new_x = linspace(-2,2,length(FinalW(:,end)'*PHI));
+% plot(new_x,FinalW(:,1)'*PHI)
+[~,indexJ0] = min(J0);
+x_j0 = x(indexJ0)
+[~,psiX0] = min(psi(x));
+x_psix0 = x(psiX0)
 
