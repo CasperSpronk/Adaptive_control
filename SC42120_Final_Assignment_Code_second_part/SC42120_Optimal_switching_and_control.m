@@ -115,7 +115,7 @@ R2_bar = dt*R; % Discretized R2                     %DONE
 f_1_bar = @(x)(x+dt*f_1(x)) ; % Discretized f_1     %DONE
 f_2_bar = @(x)(x+dt*f_2(x)); % Discretized f_2      %DONE
 g_1_bar = @(x)(dt*g_1(x)); % Discretized g_1        %DONE
-g_2_bar = @(x)(dt*g_2(x)); % Discretized g_2        
+g_2_bar = @(x)(dt*g_2(x)); % Discretized g_2        %DONE
 
 tic
 W = zeros(length(phi(X_k(1), X_k(2), t_switch)),N,MaxEpochNo);
