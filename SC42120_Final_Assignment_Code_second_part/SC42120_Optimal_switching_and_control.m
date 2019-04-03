@@ -29,11 +29,11 @@ psi = @(S,xtf)(xtf'*S*xtf);
 %% Systems Dynamics in continuous 
 
 % System 1 dynamics
-f_1 = @(x1,x2)[x2;x1^2-x2^2];
+f_1 = @(x1,x2)[x2;x1^2-x^2];
 g_1 = [0;1];
 
 % System 2 dynamics
-f_2 = @(x1,x2)[x2;-x2];
+f_2 = @(x2)[x2;-x2];
 g_2 = [0;0.5];
 
 % Quadratic Lyapunov Design 
@@ -112,10 +112,10 @@ Q1_bar = dt*Q; % Discretized Q1
 Q2_bar = dt*Q; % Discretized Q2
 R1_bar = dt*R; % Discretized R1
 R2_bar = dt*R; % Discretized R2
-f_1_bar = @(x1,x2)([x1;x2]+dt*f_1(x1,x2)) ; % Discretized f_1
-f_2_bar = @(x1,x2)([x1;x2]+dt*f_2(x1,x2)); % Discretized f_2
-g_1_bar = @(x1,x2)(dt*g_1); % Discretized g_1
-g_2_bar = @(x1,x2)(dt*g_2); % Discretized g_2
+f_1_bar = @(x)(x+dt*f_1(x)) ; % Discretized f_1
+f_2_bar = @(x)(x+dt*f_2(x)); % Discretized f_2
+g_1_bar = @(x)(dt*g_1(x)); % Discretized g_1
+g_2_bar = @(x)(dt*g_2(x)); % Discretized g_2
 
 tic
 W = zeros(length(phi(X_k(1), X_k(2), t_switch)),N,MaxEpochNo);
@@ -146,7 +146,8 @@ for t = 0:N-1 % time goes from 0 to tf ----> N number of sample
                 X_k =  (rand(n,1)*2-1)* StateSelectionWidth; %Initial states selection
                 t_switch = (tf*rand(s-1,1));
                 
-                J_k_t = FinalW(:,k)' * phi(X_k(1), X_k(2), t_switch); %TODO
+                J_k_t = %TODO
+                
                 % J_k_t is the target. So, W_N'*phi(X_k) is supposed to approximate J_k_t. Let's store them in the following matrices for least squares
                 RHS_J(j,:) = J_k_t;
                 LHS_J(j,:) = phi(X_k(1), X_k(2), t_switch)';
@@ -155,7 +156,7 @@ for t = 0:N-1 % time goes from 0 to tf ----> N number of sample
                 fprintf('det phi = 0\n');
                 break;
             end
-            FinalW(:,k) = inv(LHS_J' * LHS_J) * LHS_J' * RHS_J; %TODO
+            FinalW(:,k) = %TODO
             
         else % Step 2, k=N-1 to k=0
             % Step 3, i=1 and select a guess on V_0
@@ -168,13 +169,12 @@ for t = 0:N-1 % time goes from 0 to tf ----> N number of sample
                     % Step 5
                     temp_U_k = Vi_1(:,k,i)'*sigma(X_k(1), X_k(2), t_switch);
                     % Step 6
-                    U_k = temp_U_k; % doubtful
                     if k*dt < t_bar 
-                        X_k_plus_1 = f_1_bar(X_k(1),X_k(2)) + U_k; %TODO
-                        U_k = -R1_bar^-1 * g_1_bar(X_k(1),X_k(2))'*dphi_dx(X_k(1),X_k(2),k*dt)'*FinalW(:,k+1);%TODO
+                        X_k_plus_1 = %TODO
+                        U_k = %TODO
                     else
-                        X_k_plus_1 = f_2_bar(X_k(1),X_k(2)) + U_k;%TODO
-                        U_k = -R2_bar^-1 * g_2_bar(X_k(1),X_k(2))'*dphi_dx(X_k(1),X_k(2),k*dt)'*FinalW(:,k+1);%TODO
+                        X_k_plus_1 = %TODO
+                        U_k = %TODO
                     end
                     RHS_U(j,:) = U_k';
                     LHS_U(j,:) = sigma(X_k(1), X_k(2), t_switch)';
@@ -184,7 +184,7 @@ for t = 0:N-1 % time goes from 0 to tf ----> N number of sample
                     break;
                 end
                 % Step 7
-                Vi_1(:,k,i+1) = inv(LHS_U' * LHS_U) * LHS_U' * RHS_U;%TODO
+                Vi_1(:,k,i+1) = %TODO
                 
                 % Step 8
                 % Check to see if the weights of the actors in fixed point
@@ -205,13 +205,13 @@ for t = 0:N-1 % time goes from 0 to tf ----> N number of sample
                 t_switch = (tf*rand(s-1,1)); %Initial states selection
                 temp_U_k = FinalV(:,k)'*sigma(X_k(1), X_k(2), t_switch);
                 if k*dt < t_bar 
-                   X_k_plus_1 = X_k + f_1_bar(X_k(1),X_k(2)) + g_1_bar(X_k(1),X_k(2)) * temp_U_k; %TODO
-                   J_k_plus_1 = FinalW(:,k+1)' * phi(X_k_plus_1(1),X_k_plus_1(2),k*dt); %TODO
-                   J_k_t = 0.5*Q1_bar(1,1)+0.5*sigma(X_k(1), X_k(2), t_switch)'*FinalV(:,k)*R1_bar*FinalV(:,k)'*sigma(X_k(1), X_k(2), t_switch)+J_k_plus_1;%TODO
+                   X_k_plus_1 = %TODO
+                   J_k_plus_1 = %TODO
+                   J_k_t = %TODO
                 else
-                   X_k_plus_1 =  X_k + f_2_bar(X_k(1),X_k(2)) + g_2_bar(X_k(1),X_k(2)) * temp_U_k;%TODO
-                   J_k_plus_1 = FinalW(:,k+1)' * phi(X_k_plus_1(1),X_k_plus_1(2),k*dt);%TODO
-                   J_k_t = 0.5*Q2_bar(2,2)+0.5*sigma(X_k(1), X_k(2), t_switch)'*FinalV(:,k)*R2_bar*FinalV(:,k)'*sigma(X_k(1), X_k(2), t_switch)+J_k_plus_1;%TODO
+                   X_k_plus_1 = %TODO
+                   J_k_plus_1 = %TODO
+                   J_k_t = %TODO
                 end
                 RHS_J(j,:) = J_k_t;
                 LHS_J(j,:) = phi(X_k(1), X_k(2), t_switch)';
@@ -220,7 +220,7 @@ for t = 0:N-1 % time goes from 0 to tf ----> N number of sample
                 fprintf('det phi = 0\n');
                 break;
             end
-            FinalW(:,k) = inv(LHS_J' * LHS_J) * LHS_J' * RHS_J;%TODO
+            FinalW(:,k) = %TODO
             if isnan(FinalW(:,k))
                 fprintf('Training W is diverging...\n');
                 diverged = 1;
