@@ -91,7 +91,7 @@ for t = 0:N-1
                 fprintf('det phi = 0\n');
                 break;
             end
-            FinalW(:,k) = (inv(LHS_J'*LHS_J)*LHS_J'*RHS_J);
+            FinalW(:,k) = (inv(LHS_J'*LHS_J)*LHS_J'*RHS_J); %DONE
         else % Step 3
             for i=1:NoOfEquations % Step 4
                 U_k = 0;
@@ -103,15 +103,15 @@ for t = 0:N-1
                 % beta
                 % like in the paper)
                 for j = 1:MaxEpochNo-1 
-                    X_k_plus_1 = f_bar(X_k) + g_bar*U_k;
-                    U_k = -0.5*(R_bar)^-1 * g_bar' * (dphi_dx(X_k_plus_1))' * FinalW(:,k);
+                    X_k_plus_1 = f_bar(X_k) + g_bar*U_k; %DONE
+                    U_k = -0.5*(R_bar)^-1 * g_bar' * (dphi_dx(X_k_plus_1))' * FinalW(:,k); %DONE
                 end
                 RHS_U(i,:) = U_k';
                 LHS_U(i,:) = sigma(X_k)';
                 % Generate target for updating W
-                X_k_plus_1 = X_k + f_bar(X_k) + g_bar*RHS_U(i,:);
-                J_k_plus_1 = FinalW(:,k)'*phi(X_k_plus_1);
-                J_k_t = Q_bar(X_k) + RHS_U'*R_bar*RHS_U;
+                X_k_plus_1 = X_k + f_bar(X_k) + g_bar*RHS_U(i,:); %DONE
+                J_k_plus_1 = FinalW(:,k)'*phi(X_k_plus_1); %DONE
+                J_k_t = Q_bar(X_k) + RHS_U'*R_bar*RHS_U; %DONE
                 RHS_J(i,:) = J_k_t;
                 LHS_J(i,:) = phi(X_k)';
             end
@@ -120,14 +120,14 @@ for t = 0:N-1
                 break;
             end
             % Step 8
-            FinalV(:,k) = inv(LHS_U'*LHS_U)*LHS_U'*RHS_U;
+            FinalV(:,k) = inv(LHS_U'*LHS_U)*LHS_U'*RHS_U; %DONE
 
             if det(LHS_J'*LHS_J)==0
                 fprintf('det phi = 0\n');
                 break;
             end
             % Step 9   
-            FinalW(:,k) = inv(LHS_J'*LHS_J)*LHS_J'*RHS_J;
+            FinalW(:,k) = inv(LHS_J'*LHS_J)*LHS_J'*RHS_J; %DONE
         end
 
         if isnan(FinalW(:,k))
