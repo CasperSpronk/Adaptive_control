@@ -24,7 +24,7 @@ S = [10 0; 0 10]; % matrix to determine the phi final cost
 % The function subject to minimization
 % psi is the final cost at t_f
 c = 10;
-psi = @(S,xtf)(xtf'*S*xtf);
+psi = @(S,xtf)(xtf'*S*xtf); %DONE
 
 %% Systems Dynamics in continuous 
 
