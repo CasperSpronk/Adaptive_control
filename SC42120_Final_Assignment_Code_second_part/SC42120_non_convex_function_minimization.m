@@ -163,8 +163,7 @@ for l = 1:length(x)
     J0(l) = FinalW(:,1)'* phi(x(l));
 end
 plot(x,J0)
-% new_x = linspace(-2,2,length(FinalW(:,end)'*PHI));
-% plot(new_x,FinalW(:,1)'*PHI)
+
 [~,indexJ0] = min(J0);
 x_j0 = x(indexJ0)
 [~,psiX0] = min(psi(x));
