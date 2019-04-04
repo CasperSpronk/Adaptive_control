@@ -172,10 +172,10 @@ for t = 0:N-1 % time goes from 0 to tf ----> N number of sample
                     % Step 6
                     if k*dt < t_bar 
                         X_k_plus_1 = dt*f_1_bar(X_k(1),X_k(2)) + dt*g_1_bar(X_k(1),X_k(2))*temp_U_k; %DONE
-                        U_k = -dt*R1_bar^-1 * dt*g_1_bar(X_k(1),X_k(2))'*dphi_dx(X_k(1),X_k(2),t_switch)'*FinalW(:,k+1);%TODO
+                        U_k = -(dt*R1_bar)^-1 * (dt*g_1_bar(X_k(1),X_k(2)))'*dphi_dx(X_k(1),X_k(2),t_switch)'*FinalW(:,k+1);%TODO
                     else
                         X_k_plus_1 = dt*f_2_bar(X_k(1),X_k(2)) + dt*g_2_bar(X_k(1),X_k(2))*temp_U_k; %DONE
-                        U_k = -dt*R2_bar^-1 * dt*g_2_bar(X_k(1),X_k(2))'*dphi_dx(X_k(1),X_k(2),t_switch)'*FinalW(:,k+1);%TODO
+                        U_k = -(dt*R2_bar)^-1 * (dt*g_2_bar(X_k(1),X_k(2)))'*dphi_dx(X_k(1),X_k(2),t_switch)'*FinalW(:,k+1);%TODO
                     end
                     RHS_U(j,:) = U_k';
                     LHS_U(j,:) = sigma(X_k(1), X_k(2), t_switch)';
