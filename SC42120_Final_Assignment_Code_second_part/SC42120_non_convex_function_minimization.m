@@ -159,8 +159,8 @@ figure
 
 PHI=reshape(phi(x),[8 length(phi(x))/8]);
 
-for l = 1:length(x)
-    J0(l) = FinalW(:,1)'* phi(x(l));
+for i = 1:length(x)
+    J0(i) = FinalW(:,1)'* phi(x(i));
 end
 plot(x,J0)
 
