@@ -152,7 +152,7 @@ for t = 0:N-1 % time goes from 0 to tf ----> N number of sample
                 X_k =  (rand(n,1)*2-1)* StateSelectionWidth; %Initial states selection
                 t_switch = (tf*rand(s-1,1));
                 
-                J_k_t = FinalW(:,k)' * phi(X_k(1), X_k(2), t_switch); %DONE
+                J_k_t = psi(S,X_k); %DONE
                 % J_k_t is the target. So, W_N'*phi(X_k) is supposed to approximate J_k_t. Let's store them in the following matrices for least squares
                 RHS_J(j,:) = J_k_t;
                 LHS_J(j,:) = phi(X_k(1), X_k(2), t_switch)';
@@ -174,13 +174,12 @@ for t = 0:N-1 % time goes from 0 to tf ----> N number of sample
                     % Step 5
                     temp_U_k = Vi_1(:,k,i)'*sigma(X_k(1), X_k(2), t_switch);
                     % Step 6
-                    U_k = temp_U_k; % doubtful
                     if k*dt < t_bar 
-                        X_k_plus_1 = f_1_bar(X_k(1),X_k(2)) + U_k; %DONE
-                        U_k = -R1_bar^-1 * g_1_bar(X_k(1),X_k(2))'*dphi_dx(X_k(1),X_k(2),k*dt)'*FinalW(:,k+1);%TODO
+                        X_k_plus_1 = f_1_bar(X_k(1),X_k(2)) + g_1_bar(X_k(1),X_k(2))*temp_U_k; %DONE
+                        U_k = -R1_bar^-1 * g_1_bar(X_k(1),X_k(2))'*dphi_dx(X_k(1),X_k(2),t_switch)'*FinalW(:,k+1);%TODO
                     else
-                        X_k_plus_1 = f_2_bar(X_k(1),X_k(2)) + U_k;%DONE
-                        U_k = -R2_bar^-1 * g_2_bar(X_k(1),X_k(2))'*dphi_dx(X_k(1),X_k(2),k*dt)'*FinalW(:,k+1);%TODO
+                        X_k_plus_1 = f_2_bar(X_k(1),X_k(2)) + g_2_bar(X_k(1),X_k(2))*temp_U_k; %DONE
+                        U_k = -R2_bar^-1 * g_2_bar(X_k(1),X_k(2))'*dphi_dx(X_k(1),X_k(2),t_switch)'*FinalW(:,k+1);%TODO
                     end
                     RHS_U(j,:) = U_k';
                     LHS_U(j,:) = sigma(X_k(1), X_k(2), t_switch)';
@@ -211,12 +210,12 @@ for t = 0:N-1 % time goes from 0 to tf ----> N number of sample
                 t_switch = (tf*rand(s-1,1)); %Initial states selection
                 temp_U_k = FinalV(:,k)'*sigma(X_k(1), X_k(2), t_switch);
                 if k*dt < t_bar 
-                   X_k_plus_1 = X_k + f_1_bar(X_k(1),X_k(2)) + g_1_bar(X_k(1),X_k(2)) * temp_U_k; %TODO
-                   J_k_plus_1 = FinalW(:,k+1)' * phi(X_k_plus_1(1),X_k_plus_1(2),k*dt); %TODO
+                   X_k_plus_1 = X_k + f_1_bar(X_k(1),X_k(2)) + g_1_bar(X_k(1),X_k(2)) * temp_U_k; %DONE
+                   J_k_plus_1 = FinalW(:,k+1)' * phi(X_k_plus_1(1),X_k_plus_1(2),t_switch); %DONE
                    J_k_t = 0.5*Q1_bar(1,1)+0.5*sigma(X_k(1), X_k(2), t_switch)'*FinalV(:,k)*R1_bar*FinalV(:,k)'*sigma(X_k(1), X_k(2), t_switch)+J_k_plus_1;%TODO
                 else
-                   X_k_plus_1 =  X_k + f_2_bar(X_k(1),X_k(2)) + g_2_bar(X_k(1),X_k(2)) * temp_U_k;%TODO
-                   J_k_plus_1 = FinalW(:,k+1)' * phi(X_k_plus_1(1),X_k_plus_1(2),k*dt);%TODO
+                   X_k_plus_1 =  X_k + f_2_bar(X_k(1),X_k(2)) + g_2_bar(X_k(1),X_k(2)) * temp_U_k;%DONE
+                   J_k_plus_1 = FinalW(:,k+1)' * phi(X_k_plus_1(1),X_k_plus_1(2),t_swi);%DONE
                    J_k_t = 0.5*Q2_bar(2,2)+0.5*sigma(X_k(1), X_k(2), t_switch)'*FinalV(:,k)*R2_bar*FinalV(:,k)'*sigma(X_k(1), X_k(2), t_switch)+J_k_plus_1;%TODO
                 end
                 RHS_J(j,:) = J_k_t;
@@ -226,7 +225,7 @@ for t = 0:N-1 % time goes from 0 to tf ----> N number of sample
                 fprintf('det phi = 0\n');
                 break;
             end
-            FinalW(:,k) = inv(LHS_J' * LHS_J) * LHS_J' * RHS_J;%TODO
+            FinalW(:,k) = inv(LHS_J' * LHS_J) * LHS_J' * RHS_J;%DONE
             if isnan(FinalW(:,k))
                 fprintf('Training W is diverging...\n');
                 diverged = 1;
