@@ -156,3 +156,19 @@ legend("Node 1","Node 2","Node 3","Node 4")
 title("error z with respect to node 0")
 xlabel({'time','[s]'})
 ylabel({'error','[m]'})
+
+%% plot x vs y trajectories
+figure("Name","UAV's trajectories",'NumberTitle','off')
+plot(inertial_pos_node_0(:,2),inertial_pos_node_0(:,1))
+grid on
+hold on
+plot(inertial_pos_node_1(:,2),inertial_pos_node_1(:,1))
+plot(inertial_pos_node_2(:,2),inertial_pos_node_2(:,1))
+plot(inertial_pos_node_3(:,2),inertial_pos_node_3(:,1))
+plot(inertial_pos_node_4(:,2),inertial_pos_node_4(:,1))
+legend("Node 0","Node 1","Node 2","Node 3","Node 4")
+title("UAV's trajectories")
+xlabel({'x location','[m]'})
+ylabel({'y location','[m]'})
+zlabel({'z location','[m]'})
+
