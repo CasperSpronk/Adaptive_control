@@ -164,6 +164,7 @@ title("error z with respect to node 0")
 xlabel({'time','[s]'})
 ylabel({'error','[m]'})
 
+figure_num = figure_num + 1;
 figure("Name","UAV's trajectories",'NumberTitle','off')
 plot(inertial_pos_node_0(:,2),inertial_pos_node_0(:,1))
 grid on
@@ -178,7 +179,7 @@ xlabel({'x location','[m]'})
 ylabel({'y location','[m]'})
 zlabel({'z location','[m]'})
 
-
+figure_num = figure_num + 1;
 figure("Name","UAV's jaw",'NumberTitle','off')
 plot(t,angular_pos_node_0(:,1))
 grid on
@@ -192,7 +193,7 @@ title("UAV's jaw angles")
 xlabel({'time','[s]'})
 ylabel({'jaw','[rad]'})
 
-
+figure_num = figure_num + 1;
 figure("Name","UAV's pitch",'NumberTitle','off')
 plot(t,angular_pos_node_0(:,2))
 grid on
@@ -206,6 +207,7 @@ title("UAV's pitch angles")
 xlabel({'time','[s]'})
 ylabel({'pitch','[rad]'})
 
+figure_num = figure_num + 1;
 figure("Name","UAV's roll",'NumberTitle','off')
 plot(t,angular_pos_node_0(:,3))
 grid on
@@ -220,6 +222,7 @@ xlabel({'time','[s]'})
 ylabel({'roll','[rad]'})
 
 %%  Estimated parameters from \Theta_{D_1}
+
 figure_num = figure_num + 1;
 figure(figure_num)
 title('Estimate of m1')
